@@ -6,3 +6,8 @@ jobs:
     steps:
       - name: Print Hello
         run: echo "Hello World!"
+  context-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print github info
+        run: echo "${{toJson(github)}}"
