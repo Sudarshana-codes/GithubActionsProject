@@ -1,10 +1,8 @@
 name: Third workflow
-on:
-  issues:
-    types: opened
+on: issues
 jobs:
   issue-job:
     runs-on: ubuntu-latest
     steps:
       - name: Print issue
-        run: echo "${{github.event.open_issues_count}}"
+        run: echo "${{toJson(github.event)}}"
