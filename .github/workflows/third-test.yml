@@ -1,0 +1,10 @@
+name: Third workflow
+on:
+  issues:
+    types: opened
+jobs:
+  issue-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print issue
+        run: echo "${{github.event.open_issues_count}}"
