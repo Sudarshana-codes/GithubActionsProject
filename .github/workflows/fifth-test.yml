@@ -30,7 +30,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Perform test
+        id: run-tests
         run: npm test
+      - name: Upload test report
+        if: success() && steps.run-tests.outcome == 'success'
+        run: echo "Uploaded"
       - name: Print test_username & test_env
         run: echo "print_username= $username & print_env= $test & print_port=$port"
 #        run: echo "print_username= ${{ env.username }}"
