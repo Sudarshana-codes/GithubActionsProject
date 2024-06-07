@@ -81,3 +81,17 @@ jobs:
         run: echo "${{ needs.build.outputs.script-file }}"
       - name: deploy
         run: echo "Deploying..."
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output lint
+        run: echo "lint info"
+  report:
+    needs: [lint,deploy]
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output info
+        run: |
+          echo "Something wrong"
+          echo ${{ github }}
