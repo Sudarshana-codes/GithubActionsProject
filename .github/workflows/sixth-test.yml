@@ -1,4 +1,4 @@
-name: Fifth workflow
+name: Sixth workflow
 on:
   push:
     branches:
@@ -7,13 +7,6 @@ env:
   test: Test_env
 jobs:
   test:
-    environment: testing
-    env:
-#      username: ${{ secrets.DB_USERNAME }}
-#      password: ${{ secrets.DB_PASSWORD }}
-      username: ${{ secrets.DB_USERNAME_TEST }}
-      password: ${{ secrets.DB_PASSWORD_TEST }}
-      port: 8080
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -23,21 +16,17 @@ jobs:
         with:
           node-version: '18'
       - name: Cache Dependencies
+        id: cache
         uses: actions/cache@v3
         with:
-          path: ~/.npm
+          path: node_modules
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Perform test
         id: run-tests
         run: npm test
-      - name: Upload test report
-        if: success() && steps.run-tests.outcome == 'success'
-        run: echo "Uploaded"
-      - name: Print test_username & test_env
-        run: echo "print_username= $username & print_env= $test & print_port=$port"
-#        run: echo "print_username= ${{ env.username }}"
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -47,38 +36,20 @@ jobs:
       - name: Get code
         uses: actions/checkout@v4
       - name: Cache Dependencies
+        id: cache
         uses: actions/cache@v3
         with:
-          path: ~/.npm
+          path: node_modules
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build project
         run: npm run build
-      - name: Publish html filename
-        id: publish
-        run: find dist/*.html -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
-#        run: find dist/*.html -type f -execdir echo '::set-output name=script-file::{}' ';'
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist-files
-          path: dist
-  #            path: |
-  #              dist
-  #              package.json
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: dist-files
-      - name: Output contents
-        run: ls
-      - name: Output filename
-        run: echo "${{ needs.build.outputs.script-file }}"
       - name: deploy
         run: echo "Deploying..."
   lint:
@@ -95,3 +66,4 @@ jobs:
         run: |
           echo "Something wrong"
           echo ${{ toJSON(github) }}
+
