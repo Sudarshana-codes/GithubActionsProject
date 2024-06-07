@@ -1,8 +1,5 @@
 name: Fifth workflow
-on:
-  push:
-    branches:
-      - master
+on: workflow_dispatch
 env:
   test: Test_env
 jobs:
