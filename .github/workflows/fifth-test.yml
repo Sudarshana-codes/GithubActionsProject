@@ -8,8 +8,9 @@ env:
 jobs:
   test:
     env:
-      username: test_username
-      password: test_password
+      username: ${{ secrets.DB_USERNAME }}
+      password: ${{ secrets.DB_PASSWORD }}
+      port: 8080
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -28,7 +29,7 @@ jobs:
       - name: Perform test
         run: npm test
       - name: Print test_username & test_env
-        run: echo "print_username= $username & print_env= $test"
+        run: echo "print_username= $username & print_env= $test & print_port=$port"
 #        run: echo "print_username= ${{ env.username }}"
   build:
     needs: test
