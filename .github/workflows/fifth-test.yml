@@ -3,8 +3,13 @@ on:
   push:
     branches:
       - master
+env:
+  test: Test_env
 jobs:
   test:
+    env:
+      username: test_username
+      password: test_password
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -22,6 +27,9 @@ jobs:
         run: npm ci
       - name: Perform test
         run: npm test
+      - name: Print test_username & test_env
+        run: echo "print_username= $username & print_env= $test"
+#        run: echo "print_username= ${{ env.username }}"
   build:
     needs: test
     runs-on: ubuntu-latest
