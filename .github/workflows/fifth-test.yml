@@ -7,9 +7,12 @@ env:
   test: Test_env
 jobs:
   test:
+    environment: testing
     env:
-      username: ${{ secrets.DB_USERNAME }}
-      password: ${{ secrets.DB_PASSWORD }}
+#      username: ${{ secrets.DB_USERNAME }}
+#      password: ${{ secrets.DB_PASSWORD }}
+      username: ${{ secrets.DB_USERNAME_TEST }}
+      password: ${{ secrets.DB_PASSWORD_TEST }}
       port: 8080
     runs-on: ubuntu-latest
     steps:
