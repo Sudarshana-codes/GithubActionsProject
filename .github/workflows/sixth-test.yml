@@ -1,8 +1,5 @@
 name: Sixth workflow
-on:
-  push:
-    branches:
-      - master
+on: workflow-dispatch
 env:
   test: Test_env
 jobs:

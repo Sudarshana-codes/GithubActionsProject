@@ -1,5 +1,5 @@
 name: Fifth workflow
-on: push
+on: workflow-dispatch
 env:
   test: Test_env
 jobs:
