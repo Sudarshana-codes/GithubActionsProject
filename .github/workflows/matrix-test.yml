@@ -1,8 +1,5 @@
 name: Matrix strategy
-on:
-  push:
-    branches:
-      -master
+on: push
 jobs:
   build:
     continue-on-error: true
