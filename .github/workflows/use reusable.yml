@@ -59,9 +59,16 @@ jobs:
         id: publish
         run: find dist/*.html -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
 #        run: find dist/*.html -type f -execdir echo '::set-output name=script-file::{}' ';'
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: dist
   deploy:
     needs: build
     uses: ./.github/workflows/reusable.yml
+    with:
+      artifact-name: dist-files
   lint:
     runs-on: ubuntu-latest
     steps:
