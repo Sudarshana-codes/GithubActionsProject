@@ -7,8 +7,17 @@ on:
         required: false
         default: dist
         type: string
+#      secrets:
+#        some-secret:
+#          required: false
+    outputs:
+      result:
+        description: Result of deployment
+        value: ${{ jobs.deploy.outputs.outcome }}
 jobs:
   deploy:
+    outputs:
+      outcome: ${{ steps.set-result.outputs.step-result }}
     runs-on: ubuntu-latest
     steps:
       - name: Get artifacts
@@ -19,3 +28,5 @@ jobs:
         run: ls
       - name: Output info
         run: echo "Deploying..."
+      - name: Set result output
+        run: echo "::set-output name=step-result::success"
